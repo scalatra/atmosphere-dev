@@ -16,8 +16,6 @@ libraryDependencies ++= Seq(
   "org.scalatra" % "scalatra-json" % "2.2.0-SNAPSHOT",
   "org.json4s" %% "json4s-jackson" % "3.0.0-SNAPSHOT",
   "org.atmosphere" % "atmosphere-runtime" % "1.0.0",
-  "org.atmosphere" % "atmosphere-socketio" % "1.0.0",
-  "eu.infomas" % "annotation-detector" % "3.0.0",
   "org.scalatra" % "scalatra-specs2" % "2.2.0-SNAPSHOT" % "test",
   "ch.qos.logback" % "logback-classic" % "1.0.6" % "runtime",
   "org.eclipse.jetty" % "jetty-webapp" % "8.1.7.v20120910" % "container",
