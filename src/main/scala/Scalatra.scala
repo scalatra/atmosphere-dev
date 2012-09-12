@@ -6,6 +6,6 @@ import javax.servlet.ServletContext
 class Scalatra extends LifeCycle {
   override def init(context: ServletContext) {
     context.enableAtmosphere()
-    context.mount(new MyScalatraServlet, "/*")
+//    context.mount(new MyScalatraServlet, "/*")
   }
 }

@@ -3,7 +3,6 @@ package atmosphere
 
 import javax.servlet.ServletContext
 import org.atmosphere.cpr.{ApplicationConfig, AtmosphereServlet}
-import org.atmosphere.socketio.cpr.SocketIOAtmosphereInterceptor
 
 
 
@@ -17,8 +16,8 @@ class AtmosphereServletContext(context: ServletContext) {
     val reg = context.addServlet(atmoServlet.getSimpleName, atmoServlet)
     reg.setInitParameter(ApplicationConfig.PROPERTY_NATIVE_COMETSUPPORT, useNative.toString)
     reg.setInitParameter(ApplicationConfig.PROPERTY_BLOCKING_COMETSUPPORT, useBlocking.toString)
-    reg.setLoadOnStartup(0)
-    reg.addMapping("/*")
+    reg.setLoadOnStartup(1)
+    reg.addMapping("/chat/*")
   }
 
 

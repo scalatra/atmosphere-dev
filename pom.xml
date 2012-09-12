@@ -1,0 +1,290 @@
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
+
+    <properties>
+      <scala.version>2.9.2</scala.version>
+      <jetty.version>8.1.7.v20120910</jetty.version>
+      <scalatra.version>2.2.0-SNAPSHOT</scalatra.version>
+    </properties>
+
+    <description>Atmosphere Scalatra Integration dev bed</description>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <version>0.0.1-SNAPSHOT</version>
+
+    <prerequisites>
+      <maven>3.0.0</maven>
+    </prerequisites>
+
+    <repositories>
+      <repository>
+        <id>central</id>
+        <url>http://repo1.maven.org/maven2</url>
+      </repository>
+
+      <repository>
+        <id>Typesafe Releases</id>
+        <url>http://repo.typesafe.com/typesafe/releases</url>
+      </repository>
+      <repository>
+        <id>sonatype snapshots</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        <snapshots>
+          <enabled>true</enabled>
+        </snapshots>
+      </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>sonatype releases</id>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <organization>
+        <name>org.scalatra.atmosphere</name>
+        <url>https://github.com/scalatra/atmotest</url>
+    </organization>
+
+    <groupId>org.scalatra.atmosphere</groupId>
+
+    <url>https://github.com/scalatra/atmotest</url>
+
+    <scm>
+        <connection>scm:git:git://github.com/scalatra/atmotest.git</connection>
+        <developerConnection>scm:git:git@github.com:scalatra/atmotest.git</developerConnection>
+        <url>https://github.com/scalatra/atmotest</url>
+    </scm>
+
+    <packaging>war</packaging>
+
+    <developers>
+        <developer>
+            <id>casualjim</id>
+            <name>Ivan Porto Carrero</name>
+            <url>http://flanders.co.nz/</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://raw.github.com/scalatra/atmotest/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <name>atmotest</name>
+
+    <inceptionYear>2012</inceptionYear>
+
+    <artifactId>atmotest_2.9.2</artifactId>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                  <execution>
+                    <id>main-scalac</id>
+                    <configuration>
+                      <args>
+                        <arg>-optimise</arg>
+                        <arg>-unchecked</arg>
+                        <arg>-deprecation</arg>
+                        <arg>-Xcheckinit</arg>
+                        <arg>-encoding</arg>
+                        <arg>utf8</arg>
+                        <arg>-P:continuations:enable</arg>
+                        <!-- <args>-P:scct:projectId:${project.name}</args>
+                        <args>-P:scct:basedir:${project.build.directory}/coverage</args> -->
+                      </args>
+                      <charset>UTF-8</charset>
+                      <compilerPlugins>
+                        <!-- <compilerPlugin>
+                          <groupId>reaktor</groupId>
+                          <artifactId>scct_${scala.version}</artifactId>
+                          <version>0.2-SNAPSHOT</version>
+                        </compilerPlugin> -->
+                        <compilerPlugin>
+                          <groupId>org.scala-lang.plugins</groupId>
+                          <artifactId>continuations</artifactId>
+                          <version>${scala.version}</version>
+                        </compilerPlugin>
+                      </compilerPlugins>
+                    </configuration>
+                    <goals><goal>compile</goal></goals>
+                  </execution>
+                  <execution>
+                    <id>test-scalac</id>
+                    <goals><goal>testCompile</goal></goals>
+                  </execution>
+                </executions>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <version>2.10</version>
+              <configuration>
+                <systemPropertyVariables>
+                  <!-- <scct.project.name>${project.name}</scct.project.name>
+                  <scct.coverage.file>${project.build.outputDirectory}/coverage.data</scct.coverage.file>
+                  <scct.report.dir>${project.build.directory}/coverage-report</scct.report.dir>
+                  <scct.source.dir>${project.build.sourceDirectory}</scct.source.dir> -->
+                  <akka.mode>test</akka.mode>
+                </systemPropertyVariables>
+                <useFile>false</useFile>
+                <disableXmlReport>true</disableXmlReport>
+                <includes>
+                  <!-- <include>**/*Test.*</include>
+                  <include>**/*Suite.*</include>
+                  <include>**/*Spec.*</include> -->
+                </includes>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>com.mmakowski</groupId>
+              <artifactId>maven-specs2-plugin</artifactId>
+              <version>0.3.0</version>
+              <executions>
+                <execution>
+                  <id>verify</id>
+                  <phase>test</phase>
+                  <goals>
+                    <goal>run-specs</goal>
+                  </goals>
+                </execution>
+              </executions>
+              <configuration>
+                <systemPropertyVariables>
+                  <akka.mode>test</akka.mode>
+                </systemPropertyVariables>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.mortbay.jetty</groupId>
+              <artifactId>jetty-maven-plugin</artifactId>
+              <version>${jetty.version}</version>
+              <configuration>
+                <!--<scanIntervalSeconds>10</scanIntervalSeconds>-->
+                <webApp>
+                  <resourceBases>
+                     <resourceBase>${basedir}/src/main/webapp</resourceBase>
+                  </resourceBases>
+                </webApp>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-dependency-plugin</artifactId>
+              <version>2.5</version>
+              <executions>
+                <execution>
+                  <phase>package</phase>
+                  <goals><goal>copy</goal></goals>
+                  <configuration>
+                    <artifactItems>
+                      <artifactItem>
+                          <groupId>org.mortbay.jetty</groupId>
+                          <artifactId>jetty-runner</artifactId>
+                          <version>${jetty.version}</version>
+                          <destFileName>jetty-runner.jar</destFileName>
+                      </artifactItem>
+                    </artifactItems>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-war-plugin</artifactId>
+              <version>2.2</version>
+              <configuration>
+                <webResources>
+                  <resource>
+                    <!-- this is relative to the pom.xml directory -->
+                    <directory>target/wro4j</directory>
+                  </resource>
+                </webResources>
+              </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatra</groupId>
+            <artifactId>scalatra</artifactId>
+            <version>${scalatra.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatra</groupId>
+            <artifactId>scalatra-json</artifactId>
+            <version>${scalatra.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatra</groupId>
+            <artifactId>scalatra-scalate</artifactId>
+            <version>${scalatra.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatra</groupId>
+            <artifactId>scalatra-specs2</artifactId>
+            <version>${scalatra.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.json4s</groupId>
+            <artifactId>json4s-jackson_${scala.version}</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.atmosphere</groupId>
+            <artifactId>atmosphere-runtime</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>eu.infomas</groupId>
+            <artifactId>annotation-detector</artifactId>
+            <version>3.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.0.6</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty.orbit</groupId>
+            <artifactId>javax.servlet</artifactId>
+            <version>3.0.0.v201112011016</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+
+</project>
