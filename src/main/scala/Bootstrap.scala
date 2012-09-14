@@ -37,9 +37,10 @@ class ScalatraAtmosphereHandler(app: ScalatraBase) extends AbstractReflectorAtmo
         // Resume request if necessary
         // Parse message
         // send message to atmosphere client receive method
+
       } else {
         // Set a broadcaster with scope of per request
-        // Link broadcaster with atmosphere client from the action  
+        // Link broadcaster with atmosphere client from the action
         resource.suspend()
       }
     } else {
@@ -102,6 +103,9 @@ trait AtmosphereSupport extends Initializable with Destroyable with Handler with
       case c: ServletConfig => c
     }
     atmosphereFramework.init(cfg)
+    // TODO: get servlet mapping
+    // TODO: configure the atmosphere framework with the scalatra handler
+//    framework.addAtmosphereHandler(mapping, r).initAtmosphereHandler(sc)
   }
   
   abstract override def handle(req: HttpServletRequest, res: HttpServletResponse) {
