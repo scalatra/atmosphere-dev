@@ -11,9 +11,9 @@ classpathTypes ~= (_ + "orbit")
 seq(webSettings :_*)
 
 libraryDependencies ++= Seq(
-//  "org.scalatra" % "scalatra" % "2.2.0-SNAPSHOT",
-//  "org.scalatra" % "scalatra-scalate" % "2.2.0-SNAPSHOT",
-//  "org.scalatra" % "scalatra-json" % "2.2.0-SNAPSHOT",
+  "org.scalatra" % "scalatra" % "2.2.0-SNAPSHOT",
+  "org.scalatra" % "scalatra-scalate" % "2.2.0-SNAPSHOT",
+  "org.scalatra" % "scalatra-json" % "2.2.0-SNAPSHOT",
   "org.json4s" %% "json4s-jackson" % "3.0.0-SNAPSHOT",
   "org.atmosphere" % "atmosphere-runtime" % "1.1.0-SNAPSHOT",
   "eu.infomas" % "annotation-detector" % "3.0.0",
